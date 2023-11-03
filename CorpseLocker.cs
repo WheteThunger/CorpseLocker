@@ -9,7 +9,7 @@ using UnityEngine;
 
 namespace Oxide.Plugins
 {
-    [Info("Corpse Locker", "WhiteThunder", "1.0.0")]
+    [Info("Corpse Locker", "WhiteThunder", "1.0.1")]
     [Description("Adds UI buttons to player corpses to allow quick looting.")]
     internal class CorpseLocker : CovalencePlugin
     {
@@ -157,19 +157,19 @@ namespace Oxide.Plugins
 
                     if (inventoryTypes.HasFlag(InventoryType.Main))
                     {
-                        AddButton(cuiElements,  plugin.GetMessage(player.UserIDString, LangEntry.TakeItems), "corpselocker.take.main", RightButtonMinX, 532);
+                        AddButton(cuiElements,  plugin.GetMessage(player.UserIDString, LangEntry.TakeItems), "corpselocker.take.main", RightButtonMinX, 585.5f);
                     }
 
                     if (inventoryTypes.HasFlag(InventoryType.Wear))
                     {
-                        AddButton(cuiElements, plugin.GetMessage(player.UserIDString, LangEntry.SwapItems), "corpselocker.swap.clothing", LeftButtonMinX, 255);
-                        AddButton(cuiElements, plugin.GetMessage(player.UserIDString, LangEntry.TakeItems), "corpselocker.take.clothing", RightButtonMinX, 255);
+                        AddButton(cuiElements, plugin.GetMessage(player.UserIDString, LangEntry.SwapItems), "corpselocker.swap.clothing", LeftButtonMinX, 308.5f);
+                        AddButton(cuiElements, plugin.GetMessage(player.UserIDString, LangEntry.TakeItems), "corpselocker.take.clothing", RightButtonMinX, 308.5f);
                     }
 
                     if (inventoryTypes.HasFlag(InventoryType.Belt))
                     {
-                        AddButton(cuiElements, plugin.GetMessage(player.UserIDString, LangEntry.SwapItems), "corpselocker.swap.belt", LeftButtonMinX, 174);
-                        AddButton(cuiElements, plugin.GetMessage(player.UserIDString, LangEntry.TakeItems), "corpselocker.take.belt", RightButtonMinX, 174);
+                        AddButton(cuiElements, plugin.GetMessage(player.UserIDString, LangEntry.SwapItems), "corpselocker.swap.belt", LeftButtonMinX, 175.5f);
+                        AddButton(cuiElements, plugin.GetMessage(player.UserIDString, LangEntry.TakeItems), "corpselocker.take.belt", RightButtonMinX, 175.5f);
                     }
 
                     cachedJson = CuiHelper.ToJson(cuiElements);
