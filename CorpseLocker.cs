@@ -9,7 +9,7 @@ using UnityEngine;
 
 namespace Oxide.Plugins
 {
-    [Info("Corpse Locker", "WhiteThunder", "1.0.1")]
+    [Info("Corpse Locker", "WhiteThunder", "1.0.2")]
     [Description("Adds UI buttons to player corpses to allow quick looting.")]
     internal class CorpseLocker : CovalencePlugin
     {
@@ -473,15 +473,15 @@ namespace Oxide.Plugins
             return true;
         }
 
-        private void TransferItems(ItemContainer from, ItemContainer to, bool swap = false)
+        private void TransferItems(BasePlayer looter, ItemContainer corpseContainer, ItemContainer playerContainer, bool swap = false)
         {
             if (swap)
             {
                 _tempItemList.Clear();
 
-                for (var i = 0; i < to.capacity; i++)
+                for (var i = 0; i < playerContainer.capacity; i++)
                 {
-                    var item = to.GetSlot(i);
+                    var item = playerContainer.GetSlot(i);
                     if (item == null)
                         continue;
 
@@ -491,16 +491,19 @@ namespace Oxide.Plugins
                 }
             }
 
-            for (var i = 0; i < from.capacity; i++)
+            for (var i = 0; i < corpseContainer.capacity; i++)
             {
-                from.GetSlot(i)?.MoveToContainer(to, swap ? i : -1);
+                corpseContainer.GetSlot(i)?.MoveToContainer(playerContainer, swap ? i : -1);
             }
 
             if (swap)
             {
                 foreach (var item in _tempItemList)
                 {
-                    item.MoveToContainer(from);
+                    if (!item.MoveToContainer(corpseContainer, item.position) && !item.MoveToContainer(corpseContainer))
+                    {
+                        looter.GiveItem(item);
+                    }
                 }
 
                 _tempItemList.Clear();
@@ -542,7 +545,7 @@ namespace Oxide.Plugins
                 ? GetPlayerContainer(looter, InventoryType.Main)
                 : GetPlayerContainer(looter, inventoryType);
 
-            TransferItems(corpseContainer, playerContainer, swap);
+            TransferItems(looter, corpseContainer, playerContainer, swap);
         }
 
         private bool HasPermission(BasePlayer player, string perm)
