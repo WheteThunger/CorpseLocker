@@ -9,7 +9,7 @@ using UnityEngine;
 
 namespace Oxide.Plugins
 {
-    [Info("Corpse Locker", "WhiteThunder", "1.0.2")]
+    [Info("Corpse Locker", "WhiteThunder", "1.0.3")]
     [Description("Adds UI buttons to player corpses to allow quick looting.")]
     internal class CorpseLocker : CovalencePlugin
     {
@@ -493,7 +493,14 @@ namespace Oxide.Plugins
 
             for (var i = 0; i < corpseContainer.capacity; i++)
             {
-                corpseContainer.GetSlot(i)?.MoveToContainer(playerContainer, swap ? i : -1);
+                var item = corpseContainer.GetSlot(i);
+                if (item == null)
+                    continue;
+
+                if (!swap || !item.MoveToContainer(playerContainer, i))
+                {
+                    item.MoveToContainer(playerContainer);
+                }
             }
 
             if (swap)
